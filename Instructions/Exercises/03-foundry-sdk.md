@@ -1,131 +1,131 @@
 ---
 lab:
-    title: 'Create a generative AI chat app'
-    description: 'Learn how to use the OpenAI SDK and the Responses API to build a chat app that connects to a model deployed in Microsoft Foundry.'
+    title: 'Criar um aplicativo de chat de IA generativa'
+    description: 'Aprenda a usar o OpenAI SDK e a Responses API para criar um aplicativo de chat que se conecta a um modelo implantado no Microsoft Foundry.'
     level: 300
     duration: 45
     islab: true
     status: 'released'
 ---
 
-# Create a generative AI chat app
+# Criar um aplicativo de chat de IA generativa
 
-In this exercise, you use the OpenAI SDK and the Responses API to create a chat app that connects to a model deployed in a Microsoft Foundry project.
+Neste exercício, você usará o OpenAI SDK e a Responses API para criar um aplicativo de chat que se conecta a um modelo implantado em um projeto do Microsoft Foundry.
 
-This exercise takes approximately **45** minutes.
+Este exercício leva aproximadamente **45** minutos.
 
-> **Note**: Some of the technologies used in this exercise are in preview or in active development. You may experience some unexpected behavior, warnings, or errors.
+> **Observação**: algumas das tecnologias usadas neste exercício estão em versão prévia ou em desenvolvimento ativo. Você pode encontrar comportamentos inesperados, avisos ou erros.
 
-## Prerequisites
+## Pré-requisitos
 
-Before starting this exercise, ensure you have:
+Antes de iniciar este exercício, certifique-se de que você tenha:
 
-- An active [Azure subscription](https://azure.microsoft.com/pricing/purchase-options/azure-account)
-- [Visual Studio Code](https://code.visualstudio.com/) installed
-- [Python version **3.13.xx**](https://www.python.org/downloads/release/python-31312/) installed\*
-- [Git](https://git-scm.com/install/) installed and configured
-- [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest) installed
+- Uma [assinatura ativa do Azure](https://azure.microsoft.com/pricing/purchase-options/azure-account)
+- O [Visual Studio Code](https://code.visualstudio.com/) instalado
+- A [versão **3.13.xx** do Python](https://www.python.org/downloads/release/python-31312/) instalada\*
+- O [Git](https://git-scm.com/install/) instalado e configurado
+- A [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest) instalada
 
-> \* Python 3.14 is available, but some dependencies are not yet compiled for that release. The lab has been successfully tested with Python 3.13.12.
+> \* O Python 3.14 está disponível, mas algumas dependências ainda não foram compiladas para essa versão. O laboratório foi testado com sucesso usando o Python 3.13.12.
 
-## Create a Microsoft Foundry project
+## Criar um projeto do Microsoft Foundry
 
-Microsoft Foundry uses projects to organize models, resources, data, and other assets used to develop an AI solution.
+O Microsoft Foundry usa projetos para organizar modelos, recursos, dados e outros ativos usados no desenvolvimento de uma solução de IA.
 
-1. In a web browser, open the [Microsoft Foundry portal](https://ai.azure.com) at `https://ai.azure.com` to start building; signing in using your Azure credentials. Close any tips or quick start panes that are opened the first time you sign in.
+1. Em um navegador da Web, abra o [portal do Microsoft Foundry](https://ai.azure.com) em `https://ai.azure.com` para começar a desenvolver; entre usando suas credenciais do Azure. Feche todas as dicas ou painéis de início rápido que forem abertos na primeira vez que você entrar.
 
-1. If it is not already enabled, in the tool bar at the top of the page, enable the **New Foundry** option. Then, if prompted, create a new project with a unique name; expanding the **Advanced options** area to specify the following settings for your project:
-    - **Foundry resource**: *Use the default name for your resource (usually {project_name}-resource)*
-    - **Subscription**: *Your Azure subscription*
-    - **Resource group**: *Create or select a resource group*
-    - **Region**: Select any of the **AI Foundry recommended** regions in **[this list](https://learn.microsoft.com/azure/foundry/openai/how-to/responses#region-availability)**{:target="_blank"}
+1. Se ainda não estiver habilitada, habilite a opção **New Foundry** na barra de ferramentas na parte superior da página. Em seguida, se solicitado, crie um novo projeto com um nome exclusivo; expanda a área **Advanced options** para especificar as seguintes configurações para o projeto:
+    - **Foundry resource**: *Use o nome padrão do recurso (geralmente {project_name}-resource)*
+    - **Subscription**: *Sua assinatura do Azure*
+    - **Resource group**: *Crie ou selecione um grupo de recursos*
+    - **Region**: selecione qualquer uma das regiões **AI Foundry recomendadas** nesta [lista](https://learn.microsoft.com/azure/foundry/openai/how-to/responses#region-availability){:target="_blank"}
 
-1. Wait for your project to be created. Then view its home page.
+1. Aguarde até que o projeto seja criado. Em seguida, exiba sua página inicial.
 
-## Deploy a model
+## Implantar um modelo
 
-Next, let's deploy a model that you'll use in your chat application.
+Em seguida, vamos implantar um modelo que será usado no aplicativo de chat.
 
-1. Now you're ready to explore models. On the **Discover** page, select the **Models** tab to view the Microsoft Foundry model catalog.
-1. In the model catalog, search for `gpt-5.2`.
-1. Review the model card, and then deploy it using the default settings.
-1. When the model has been deployed, it will open in the model playground - you can test it there if you like.
+1. Agora você está pronto para explorar os modelos. Na página **Discover**, selecione a guia **Models** para exibir o catálogo de modelos do Microsoft Foundry.
+1. No catálogo de modelos, pesquise `gpt-5.2`.
+1. Examine o model card e implante o modelo usando as configurações padrão.
+1. Quando o modelo for implantado, ele será aberto no model playground; se quiser, você poderá testá-lo nesse local.
 
-## Get the endpoint
+## Obter o endpoint
 
-You'll need an endpoint to connect to the model from a client application. In this exercise, we're going to use the OpenAI SDK to chat with the model; and we'll use the Azure OpenAI endpoint with Entra ID authentication to connect to it.
+Você precisará de um endpoint para conectar um aplicativo cliente ao modelo. Neste exercício, usaremos o OpenAI SDK para conversar com o modelo e usaremos o endpoint do Azure OpenAI com autenticação do Entra ID para nos conectarmos a ele.
 
-> **Note**: As an alternative to Entra ID authentication, you could use the API Key for the project. using Entra ID authentication is preferred whenever possible.
+> **Observação**: como alternativa à autenticação do Entra ID, você poderia usar a API Key do projeto. Sempre que possível, é preferível usar a autenticação do Entra ID.
 
-1. On the menu bar, select the **Home** page.
-1. Note the **Azure OpenAI Endpoint** displayed there.
+1. Na barra de menus, selecione a página **Home**.
+1. Anote o **Azure OpenAI Endpoint** exibido nessa página.
 
-    > **Tip**: You'll use the **Azure OpenAI Endpoint** in this exercise, <u>not</u> the project endpoint!
+    > **Dica**: neste exercício, você usará o **Azure OpenAI Endpoint**, <u>não</u> o endpoint do projeto!
 
-## Create a client application to chat with the model
+## Criar um aplicativo cliente para conversar com o modelo
 
-Now that you have deployed a model, you can use the OpenAI SDK and the Responses API to develop an application that chats with it.
+Agora que você implantou um modelo, pode usar o OpenAI SDK e a Responses API para desenvolver um aplicativo de chat com ele.
 
-### Get the application files from GitHub
+### Obter os arquivos do aplicativo no GitHub
 
-The initial application files you'll need to develop your chat application are provided in a GitHub repo.
+Os arquivos iniciais necessários para desenvolver o aplicativo de chat estão disponíveis em um repositório do GitHub.
 
-1. Open Visual Studio Code.
-1. Open the command palette (*Ctrl+Shift+P*) and use the `Git:clone` command to clone the `https://github.com/microsoftlearning/mslearn-ai-studio` repo to a local folder (it doesn't matter which one). Then open it.
+1. Abra o Visual Studio Code.
+1. Abra a paleta de comandos (*Ctrl+Shift+P*) e use o comando `Git:clone` para clonar o repositório `https://github.com/microsoftlearning/mslearn-ai-studio` em uma pasta local (pode ser qualquer uma). Em seguida, abra-o.
 
-    You may be prompted to confirm you trust the authors.
+    Talvez seja solicitado que você confirme se confia nos autores.
 
-### Prepare the application configuration
+### Preparar a configuração do aplicativo
 
-1. In Visual Studio Code, view the **Extensions** pane; and if it is not already installed, install the **Python** extension.
-1. In the **Command Palette**, use the command `python:select interpreter`. Then create a new **Venv** environment based on your Python 3.13 installation.
+1. No Visual Studio Code, abra o painel **Extensions** e, se ainda não estiver instalada, instale a extensão **Python**.
+1. Na **Command Palette**, use o comando `python:select interpreter`. Em seguida, crie um ambiente **Venv** baseado na instalação do Python 3.13.
 
-    > **Tip**: If you are prompted to install dependencies, you can install the ones in the *requirements.txt* file in the */labfiles/foundry-chat/python/chat-app* folder; but it's OK if you don't - we'll install them later!
+    > **Dica**: se for solicitado que você instale dependências, poderá instalar as que estão no arquivo *requirements.txt* da pasta */labfiles/foundry-chat/python/chat-app*; mas não há problema se você não fizer isso, pois nós as instalaremos mais tarde!
 
-1. In the Explorer pane, navigate to the folder containing the application code files at **/labfiles/foundry-chat/python/chat-app**. The application files include:
-    - **.env** (the application configuration file)
-    - **requirements.txt** (the Python package dependencies that need to be installed)
-    - **chat-app.py** (the code file for the chat application)
-    - **chat-async.py** (the code file for an asynchronous version of the application)
+1. No painel Explorer, navegue até a pasta que contém os arquivos de código do aplicativo em **/labfiles/foundry-chat/python/chat-app**. Os arquivos do aplicativo incluem:
+    - **.env** (o arquivo de configuração do aplicativo)
+    - **requirements.txt** (as dependências de pacotes Python que precisam ser instaladas)
+    - **chat-app.py** (o arquivo de código do aplicativo de chat)
+    - **chat-async.py** (o arquivo de código de uma versão assíncrona do aplicativo)
 
-1. In the **Explorer** pane, right-click the **chat-app** folder containing the application files, and select **Open in integrated terminal** (or open a terminal in the **Terminal** menu and navigate to the */labfiles/foundry-chat/python/chat-app* folder.)
+1. No painel **Explorer**, clique com o botão direito do mouse na pasta **chat-app** que contém os arquivos do aplicativo e selecione **Open in integrated terminal** (ou abra um terminal no menu **Terminal** e navegue até a pasta */labfiles/foundry-chat/python/chat-app*.)
 
-    > **Note**: Opening the terminal in Visual Studio Code will automatically activate the Python environment. You may need to enable running scripts on your system.
+    > **Observação**: abrir o terminal no Visual Studio Code ativará automaticamente o ambiente Python. Talvez seja necessário habilitar a execução de scripts no sistema.
 
-1. Ensure that the terminal is open in the **labfiles/foundry-chat/python/chat-app** folder with the prefix **(.venv)** to indicate that the Python environment you created is active.
-1. Install the OpenAI SDK, Azure Identity, and other required packages by running the following command:
+1. Certifique-se de que o terminal esteja aberto na pasta **labfiles/foundry-chat/python/chat-app**, com o prefixo **(.venv)** indicando que o ambiente Python criado está ativo.
+1. Instale o OpenAI SDK, o Azure Identity e os outros pacotes necessários executando o seguinte comando:
 
     ```
     pip install -r requirements.txt
     ```
 
-1. In the **Explorer** pane, in the **labfiles/foundry-chat/python/chat-app** folder, select the **.env** file to open it. Then update the configuration values to include the **Azure OpenAI Endpoint** and the name assigned to the deployment for the **gpt-5.2** model.
+1. No painel **Explorer**, na pasta **labfiles/foundry-chat/python/chat-app**, selecione o arquivo **.env** para abri-lo. Em seguida, atualize os valores de configuração para incluir o **Azure OpenAI Endpoint** e o nome atribuído à implantação do modelo **gpt-5.2**.
 
-    > **Tip**: Copy the **Azure OpenAI Endpoint** (not the project endpoint!) from the project home page in the Foundry portal, and enter the exact deployment name assigned to your deployment in the `MODEL_DEPLOYMENT` setting.
+    > **Dica**: copie o **Azure OpenAI Endpoint** (não o endpoint do projeto!) da página inicial do projeto no portal do Foundry e insira o nome exato da implantação atribuído à sua implantação na configuração `MODEL_DEPLOYMENT`.
 
-    Save the modified configuration file.
+    Salve o arquivo de configuração modificado.
 
-### Use the *ChatCompletions* API to chat with the model
+### Usar a API *ChatCompletions* para conversar com o modelo
 
-The *ChatCompletions* API is a well-established way to build client applications for large language models, and has been widely adopted.
+A API *ChatCompletions* é uma maneira consolidada de criar aplicativos cliente para large language models e foi amplamente adotada.
 
-1. In the **Explorer** pane, in the **labfiles/foundry-chat/python/chat-app** folder, select the **chat-app.py** file (<u>not</u> *chat-async.py*) to open it.
-1. Review the existing code. You will add code to use the OpenAI SDK to access your model.
+1. No painel **Explorer**, na pasta **labfiles/foundry-chat/python/chat-app**, selecione o arquivo **chat-app.py** (<u>não</u> o arquivo *chat-async.py*) para abri-lo.
+1. Examine o código existente. Você adicionará código para usar o OpenAI SDK e acessar seu modelo.
 
-    > **Tip**: As you add code to the code file, be sure to maintain the correct indentation.
+    > **Dica**: ao adicionar código ao arquivo, mantenha a indentação correta.
 
-1. At the top of the code file, under the existing namespace references, find the comment **Import namespaces** and add the following code to import the namespace you will need to use the OpenAI SDK:
+1. Na parte superior do arquivo de código, sob as referências de namespace existentes, localize o comentário **Import namespaces** e adicione o código a seguir para importar o namespace necessário ao uso do OpenAI SDK:
 
     ```python
-   # import namespaces
+   # Importar namespaces
    from openai import OpenAI
    from azure.identity import DefaultAzureCredential, get_bearer_token_provider
     ```
 
-1. In the **main** function, note that code to load the endpoint and key from the configuration file has already been provided. Then find the comment **Initialize the OpenAI client**, and add the following code to create a client for the OpenAI API:
+1. Na função **main**, observe que o código para carregar o endpoint e a chave do arquivo de configuração já foi fornecido. Em seguida, localize o comentário **Initialize the OpenAI client** e adicione o código a seguir para criar um cliente para a API da OpenAI:
 
     ```python
-   # Initialize the OpenAI client
+   # Inicializar o cliente da OpenAI
    token_provider = get_bearer_token_provider(
         DefaultAzureCredential(), "https://ai.azure.com/.default"
    )
@@ -136,16 +136,16 @@ The *ChatCompletions* API is a well-established way to build client applications
    )
     ```
 
-1. In the **main** function, note that code to request a user prompt until the user quits the app has been provided. Within this loop, find the **Get a response** comment, and add the following code:
+1. Na função **main**, observe que foi fornecido código para solicitar um prompt do usuário até que ele encerre o aplicativo. Dentro desse loop, localize o comentário **Get a response** e adicione o seguinte código:
 
     ```python
-   # Get a response
+   # Obter uma resposta
    completion = openai_client.chat.completions.create(
         model=model_deployment,
         messages=[
             {
                 "role": "system",
-                "content": "You are a helpful AI assistant that answers questions and provides information."
+                "content": "Você é um assistente de IA útil que responde a perguntas e fornece informações."
             },
             {
                 "role": "user",
@@ -156,90 +156,90 @@ The *ChatCompletions* API is a well-established way to build client applications
    print(completion.choices[0].message.content)
     ```
 
-    Note that the *ChatCompletions* API uses a JSON collection of *messages* to encapsulate the conversation. Often, these consist of a *system prompt* that provides instructions to the model, and a *user prompt* that includes the user's input.
+    Observe que a API *ChatCompletions* usa uma coleção JSON de *messages* para encapsular a conversa. Geralmente, elas consistem em um *system prompt* que fornece instruções ao modelo e um *user prompt* que inclui a entrada do usuário.
 
-1. Save the changes to the code file. Then, in the terminal pane, use the following command to sign into Azure.
+1. Salve as alterações no arquivo de código. Em seguida, no painel do terminal, use o comando a seguir para entrar no Azure.
 
     ```powershell
     az login
     ```
 
-    > **Note**: In most scenarios, just using *az login* will be sufficient. However, if you have subscriptions in multiple tenants, you may need to specify the tenant by using the *--tenant* parameter. See [Sign into Azure interactively using the Azure CLI](https://learn.microsoft.com/cli/azure/authenticate-azure-cli-interactively) for details.
+    > **Observação**: na maioria dos cenários, basta usar *az login*. No entanto, se você tiver assinaturas em vários tenants, poderá ser necessário especificar o tenant usando o parâmetro *--tenant*. Consulte [Sign into Azure interactively using the Azure CLI](https://learn.microsoft.com/cli/azure/authenticate-azure-cli-interactively) para obter detalhes.
 
-1. When prompted, follow the instructions to sign into Azure. Then complete the sign in process in the command line, viewing (and confirming if necessary) the details of the subscription containing your Foundry resource.
-1. After you have signed in, enter the following command to run the application:
+1. Quando solicitado, siga as instruções para entrar no Azure. Em seguida, conclua o processo de entrada na linha de comando, examinando (e confirmando, se necessário) os detalhes da assinatura que contém o recurso do Foundry.
+1. Depois de entrar, insira o comando a seguir para executar o aplicativo:
 
     ```powershell
-   python chat-app.py
+    python chat-app.py
     ```
 
-    The program should run in the terminal (if not, resolve any errors and try again).
+    O programa deverá ser executado no terminal (caso contrário, resolva os erros e tente novamente).
 
-1. When prompted, enter the following prompt:
+1. Quando solicitado, insira o seguinte prompt:
 
     ```input
-    Tell me about the ELIZA chatbot.
+    Fale-me sobre o chatbot ELIZA.
     ```
 
-    After a few moments, the app should respond with some information about the ELIZA chatbot created in the 1960s.
+    Após alguns instantes, o aplicativo deverá responder com algumas informações sobre o chatbot ELIZA, criado na década de 1960.
 
-1. Enter the prompt `quit` to end the application.
+1. Insira o prompt `quit` para encerrar o aplicativo.
 
-### Use the *Responses* API to chat with the model
+### Usar a API *Responses* para conversar com o modelo
 
-While the *ChatCompletions* API is widely used, it is increasingly being superseded by the newer *Responses* API. Let's update the code to use it.
+Embora a API *ChatCompletions* seja amplamente usada, ela está sendo cada vez mais substituída pela API *Responses*, mais recente. Vamos atualizar o código para usá-la.
 
-1. In the **chat-app.py** code, in the **main** function, replace the code under the comment **Get a response** with the following code that uses the *Responses* API.
+1. No código de **chat-app.py**, na função **main**, substitua o código sob o comentário **Get a response** pelo código a seguir, que usa a API *Responses*.
 
     ```python
-   # Get a response
+   # Obter uma resposta
    response = openai_client.responses.create(
                 model=model_deployment,
-                instructions="You are a helpful AI assistant that answers questions and provides information.",
+                instructions="Você é um assistente de IA útil que responde a perguntas e fornece informações.",
                 input=input_text
    )
    print(response.output_text)
     ```
 
-    Note the simpler syntax in which the system message is assigned to the *instructions* parameter, and the user prompt is assigned to the *input* parameter.
+    Observe a sintaxe mais simples, na qual a mensagem do sistema é atribuída ao parâmetro *instructions* e o prompt do usuário é atribuído ao parâmetro *input*.
 
-1. Save the changes to the code, and in the terminal pane, re-run the application (`python chat-app.py`).
-1. When prompted, enter the same prompt as before:
-
-    ```input
-    Tell me about the ELIZA chatbot.
-    ```
-
-    After a few moments, the app should once again respond with some information about the ELIZA chatbot.
-
-1. Enter the following prompt to try to continue the conversation:
+1. Salve as alterações no código e, no painel do terminal, execute novamente o aplicativo (`python chat-app.py`).
+1. Quando solicitado, insira o mesmo prompt de antes:
 
     ```input
-    How does it compare to modern LLMs?
+    Fale-me sobre o chatbot ELIZA.
     ```
 
-    The app should respond in a way that indicates it doesn't understand what "it" refers to. The conversation context has been lost. We'll fix that.
+    Após alguns instantes, o aplicativo deverá responder novamente com algumas informações sobre o chatbot ELIZA.
 
-1. Enter the prompt `quit` to end the application.
+1. Insira o prompt a seguir para tentar continuar a conversa:
 
-### Add conversation tracking
+    ```input
+    Como ele se compara aos LLMs modernos?
+    ```
 
-To maintain the conversational context, we need to include references to previous responses in each new request.
+    O aplicativo deverá responder de uma maneira que indique que não entende a que "ele" se refere. O contexto da conversa foi perdido. Vamos corrigir isso.
 
-1. In the **chat-app.py** code, in the **main** function, find the comment **Loop until the user wants to quit**, and add the following code <u>above</u> it (*before* the loop):
+1. Insira o prompt `quit` para encerrar o aplicativo.
+
+### Adicionar o controle da conversa
+
+Para manter o contexto conversacional, precisamos incluir referências às respostas anteriores em cada nova solicitação.
+
+1. No código de **chat-app.py**, na função **main**, localize o comentário **Loop until the user wants to quit** e adicione o código a seguir <u>acima</u> dele (*antes* do loop):
 
     ```python
-   # Track responses
+   # Controlar respostas
    last_response_id = None
     ```
 
-1. Modify the code under the comment **Get a response** with the following code to pass the previous response ID on the request, and then obtain the new response ID so it can be added next time.
+1. Modifique o código sob o comentário **Get a response** usando o código a seguir para transmitir o ID da resposta anterior na solicitação e, em seguida, obter o novo ID da resposta para que ele possa ser adicionado na próxima vez.
 
     ```python
-   # Get a response
+   # Obter uma resposta
    response = openai_client.responses.create(
                 model=model_deployment,
-                instructions="You are a helpful AI assistant that answers questions and provides information.",
+                instructions="Você é um assistente de IA útil que responde a perguntas e fornece informações.",
                 input=input_text,
                 previous_response_id=last_response_id,
    )
@@ -247,38 +247,38 @@ To maintain the conversational context, we need to include references to previou
    last_response_id = response.id
     ```
 
-    Using this technique, you can pass the ID of the previous response to maintain context. You could also implement more complex logic to pass an ID from any previous response to redirect a conversation or resume a previous conversational thread.
+    Usando essa técnica, você pode transmitir o ID da resposta anterior para manter o contexto. Também poderia implementar uma lógica mais complexa para transmitir um ID de qualquer resposta anterior, redirecionar uma conversa ou retomar uma thread conversacional anterior.
 
-1. Save the changes to the code, and in the terminal pane, re-run the application (`python chat-app.py`).
-1. When prompted, enter the same prompt as before:
-
-    ```input
-    Tell me about the ELIZA chatbot.
-    ```
-
-    After a few moments, the app should once again respond with some information about the ELIZA chatbot.
-
-1. Enter the following prompt to try to continue the conversation:
+1. Salve as alterações no código e, no painel do terminal, execute novamente o aplicativo (`python chat-app.py`).
+1. Quando solicitado, insira o mesmo prompt de antes:
 
     ```input
-    How does it compare to modern LLMs?
+    Fale-me sobre o chatbot ELIZA.
     ```
 
-    This time, the app should respond with a comparison of the ELIZA chatbot and modern LLMs. The response may be quite lengthy, and the app waits until it has all been received from the model before displaying it, which may make the app seem unresponsive. We'll fix that next!
+    Após alguns instantes, o aplicativo deverá responder novamente com algumas informações sobre o chatbot ELIZA.
 
-1. Enter the prompt `quit` to end the application.
+1. Insira o prompt a seguir para tentar continuar a conversa:
 
-### Implement *streaming* responses
+    ```input
+    Como ele se compara aos LLMs modernos?
+    ```
 
-To handle long responses, you can use *streaming* to start processing partial responses before the full text has been returned.
+    Desta vez, o aplicativo deverá responder comparando o chatbot ELIZA com os LLMs modernos. A resposta pode ser bastante longa, e o aplicativo aguarda até receber tudo do modelo antes de exibi-la, o que pode fazer o aplicativo parecer sem resposta. Vamos corrigir isso a seguir!
 
-1. In the **chat-app.py** code, in the **main** function, replace the code under the comment **Get a response** with the following code that uses *streaming*.
+1. Insira o prompt `quit` para encerrar o aplicativo.
+
+### Implementar respostas em *streaming*
+
+Para lidar com respostas longas, você pode usar *streaming* para começar a processar respostas parciais antes que o texto completo seja retornado.
+
+1. No código de **chat-app.py**, na função **main**, substitua o código sob o comentário **Get a response** pelo código a seguir, que usa *streaming*.
 
     ```python
-   # Get a response
+   # Obter uma resposta
    stream = openai_client.responses.create(
                 model=model_deployment,
-                instructions="You are a helpful AI assistant that answers questions and provides information.",
+                instructions="Você é um assistente de IA útil que responde a perguntas e fornece informações.",
                 input=input_text,
                 previous_response_id=last_response_id,
                 stream=True
@@ -291,49 +291,49 @@ To handle long responses, you can use *streaming* to start processing partial re
    print()
     ```
 
-    Note that the *stream=True* parameter creates a streamed response in which *events* occur as each new chunk (or *delta*) is ready for processing.
+    Observe que o parâmetro *stream=True* cria uma resposta em streaming na qual *events* ocorrem à medida que cada novo bloco (ou *delta*) fica pronto para processamento.
 
-1. Save the changes to the code, and in the terminal pane, re-run the application (`python chat-app.py`).
-1. When prompted, enter the same prompt as before:
-
-    ```input
-    Tell me about the ELIZA chatbot.
-    ```
-
-    After a few moments, the app should start responding with some information about the ELIZA chatbot. The response should appear incrementally as each chunk is returned.
-
-1. Enter the following prompt to try to continue the conversation:
+1. Salve as alterações no código e, no painel do terminal, execute novamente o aplicativo (`python chat-app.py`).
+1. Quando solicitado, insira o mesmo prompt de antes:
 
     ```input
-    How does it compare to modern LLMs?
+    Fale-me sobre o chatbot ELIZA.
     ```
 
-    Again, the response should be displayed incrementally.
+    Após alguns instantes, o aplicativo deverá começar a responder com algumas informações sobre o chatbot ELIZA. A resposta deverá aparecer de forma incremental à medida que cada bloco for retornado.
 
-1. Enter the prompt `quit` to end the application.
+1. Insira o prompt a seguir para tentar continuar a conversa:
 
-### Use the asynchronous API
+    ```input
+    Como ele se compara aos LLMs modernos?
+    ```
 
-The OpenAI SDK offers an asynchronous option that can increase the responsiveness of applications when using long-running model or agent operations.
+    Novamente, a resposta deverá ser exibida de forma incremental.
 
-1. In the **Explorer** pane, in the **labfiles/foundry-chat/python/chat-app** folder, select the **chat-async.py** file (<u>not</u> *chat-app.py*) to open it.
-1. Review the existing code. You will add code to use the OpenAI SDK async API to access your model.
+1. Insira o prompt `quit` para encerrar o aplicativo.
 
-    > **Tip**: As you add code to the code file, be sure to maintain the correct indentation.
+### Usar a API assíncrona
 
-1. At the top of the code file, under the existing namespace references, find the comment **Import namespaces** and add the following code to import the namespace you will need to use the OpenAI SDK:
+O OpenAI SDK oferece uma opção assíncrona que pode aumentar a capacidade de resposta dos aplicativos ao usar operações de longa duração com modelos ou agentes.
+
+1. No painel **Explorer**, na pasta **labfiles/foundry-chat/python/chat-app**, selecione o arquivo **chat-async.py** (<u>não</u> o arquivo *chat-app.py*) para abri-lo.
+1. Examine o código existente. Você adicionará código para usar a API assíncrona do OpenAI SDK e acessar seu modelo.
+
+    > **Dica**: ao adicionar código ao arquivo, mantenha a indentação correta.
+
+1. Na parte superior do arquivo de código, sob as referências de namespace existentes, localize o comentário **Import namespaces** e adicione o código a seguir para importar o namespace necessário ao uso do OpenAI SDK:
 
     ```python
-   # import namespaces for async
+   # Importar namespaces para execução assíncrona
    import asyncio
    from openai import AsyncOpenAI
    from azure.identity.aio import DefaultAzureCredential, get_bearer_token_provider
     ```
 
-1. In the **main** function, note that code to load the endpoint and key from the configuration file has already been provided. Then find the comment **Initialize an async OpenAI client**, and add the following code to create a client for the OpenAI API:
+1. Na função **main**, observe que o código para carregar o endpoint e a chave do arquivo de configuração já foi fornecido. Em seguida, localize o comentário **Initialize an async OpenAI client** e adicione o código a seguir para criar um cliente para a API da OpenAI:
 
     ```python
-   # Initialize an async OpenAI client
+   # Inicializar um cliente assíncrono da OpenAI
    credential = DefaultAzureCredential()
    token_provider = get_bearer_token_provider(
     credential, "https://ai.azure.com/.default"
@@ -345,13 +345,13 @@ The OpenAI SDK offers an asynchronous option that can increase the responsivenes
    )
     ```
 
-1. In the **main** function, note that code to request a user prompt until the user quits the app has been provided. Within this loop, find the **Await an asynchronous response** comment, and add the following code:
+1. Na função **main**, observe que foi fornecido código para solicitar um prompt do usuário até que ele encerre o aplicativo. Dentro desse loop, localize o comentário **Await an asynchronous response** e adicione o seguinte código:
 
     ```python
-   # Await an asynchronous response
+   # Aguardar uma resposta assíncrona
    response = await async_client.responses.create(
                 model=model_deployment,
-                instructions="You are a helpful AI assistant that answers questions and provides information.",
+                instructions="Você é um assistente de IA útil que responde a perguntas e fornece informações.",
                 input=input_text,
                 previous_response_id=last_response_id
    )
@@ -360,41 +360,41 @@ The OpenAI SDK offers an asynchronous option that can increase the responsivenes
    last_response_id = response.id
     ```
 
-    This code awaits an asynchronous response from the model.
+    Esse código aguarda uma resposta assíncrona do modelo.
 
-1. At the end of the **main** function, in the **finally** block, find the comment **Close the async client session** and add the following code to close the asynchronous client:
+1. No final da função **main**, no bloco **finally**, localize o comentário **Close the async client session** e adicione o seguinte código para fechar o cliente assíncrono:
 
     ```python
-   # Close the async client session
+   # Fechar a sessão do cliente assíncrono
     await credential.close()
     ```
 
-1. Save the changes to the code file. Then, in the terminal pane, use the following command to run the program:
+1. Salve as alterações no arquivo de código. Em seguida, no painel do terminal, use o seguinte comando para executar o programa:
 
     ```powershell
    python chat-async.py
     ```
 
-    The program should run in the terminal (if not, resolve any errors and try again).
+    O programa deverá ser executado no terminal (caso contrário, resolva os erros e tente novamente).
 
-1. When prompted, enter the following prompt:
+1. Quando solicitado, insira o seguinte prompt:
 
     ```input
-    Tell me about the Turing test.
+    Fale-me sobre o teste de Turing.
     ```
 
-    After a few moments, the app should respond with some information about the Turing test.
+    Após alguns instantes, o aplicativo deverá responder com algumas informações sobre o teste de Turing.
 
-1. Enter the prompt `quit` to end the application.
+1. Insira o prompt `quit` para encerrar o aplicativo.
 
-## Summary
+## Resumo
 
-In this exercise, you used the OpenAI SDK and the *ChatCompletions* and *Responses* APIs to create a client application for a generative AI model that you deployed in a Microsoft Foundry project. You customized the model's behavior by tracking conversational context and implemented streaming to deliver a responsive chat experience.
+Neste exercício, você usou o OpenAI SDK e as APIs *ChatCompletions* e *Responses* para criar um aplicativo cliente para um modelo de IA generativa implantado em um projeto do Microsoft Foundry. Você personalizou o comportamento do modelo controlando o contexto conversacional e implementou streaming para oferecer uma experiência de chat responsiva.
 
-## Clean up
+## Limpeza
 
-If you've finished exploring Microsoft Foundry, you should delete the resources you have created in this exercise to avoid incurring unnecessary Azure costs.
+Se você terminou de explorar o Microsoft Foundry, deverá excluir os recursos criados neste exercício para evitar custos desnecessários do Azure.
 
-1. Open the [Azure portal](https://portal.azure.com) and view the contents of the resource group where you deployed the resources used in this exercise.
-1. On the toolbar, select **Delete resource group**.
-1. Enter the resource group name and confirm that you want to delete it.
+1. Abra o [portal do Azure](https://portal.azure.com) e exiba o conteúdo do grupo de recursos no qual você implantou os recursos usados neste exercício.
+1. Na barra de ferramentas, selecione **Delete resource group**.
+1. Insira o nome do grupo de recursos e confirme que deseja excluí-lo.
