@@ -75,7 +75,7 @@ O model que você fez deploy possui um guardrail padrão aplicado, com um conjun
 
     O content filter padrão pode bloquear o prompt por interpretar que ele contém uma referência a Self-harm.
 
-    > **Importante**: Se você tiver preocupações relacionadas a Self-harm ou outros problemas de saúde mental, procure ajuda profissional. Experimente inserir o prompt `Where can I get help or support related to self-harm?`
+    > **Importante**: Se você tiver preocupações relacionadas a Self-harm ou outros problemas de saúde mental, procure ajuda profissional. Experimente inserir o prompt `Onde posso obter ajuda ou apoio relacionados à automutilação?`
 
 ## Criar e aplicar um guardrail personalizado
 
