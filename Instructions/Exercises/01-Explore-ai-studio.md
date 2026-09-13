@@ -1,7 +1,7 @@
 ---
 lab:
-  title: Prepare for an AI development project
-  description: Learn how to organize AI resources in a Microsoft Foundry project and get started with the Foundry Toolkit extension for Visual Studio Code.
+  title: Preparar-se para um projeto de desenvolvimento de IA
+  description: Aprenda a organizar recursos de IA em um projeto do Microsoft Foundry e comece a usar a extensão Foundry Toolkit para Visual Studio Code.
   level: 200
   duration: 30
   islab: true
@@ -11,138 +11,138 @@ lab:
     - Visual Studio Code
 ---
 
-# Prepare for an AI development project
+# Preparar-se para um projeto de desenvolvimento de IA
 
-In this exercise, you use Microsoft Foundry portal to create a project, ready to build an AI solution.
+Neste exercício, você usará o portal do Microsoft Foundry para criar um projeto pronto para desenvolver uma solução de IA.
 
-This exercise takes approximately **30** minutes.
+Este exercício leva aproximadamente **30** minutos.
 
-> **Note**: Some of the technologies used in this exercise are in preview or in active development. You may experience some unexpected behavior, warnings, or errors.
+> **Observação**: algumas das tecnologias usadas neste exercício estão em versão prévia ou em desenvolvimento ativo. Você pode encontrar comportamentos inesperados, avisos ou erros.
 
-## Prerequisites
+## Pré-requisitos
 
-Before starting this exercise, ensure you have:
+Antes de iniciar este exercício, certifique-se de que você tenha:
 
-- An active [Azure subscription](https://azure.microsoft.com/pricing/purchase-options/azure-account)
-- [Visual Studio Code](https://code.visualstudio.com/) installed
-- [Python version **3.13.xx**](https://www.python.org/downloads/release/python-31312/) installed\*
-- [Git](https://git-scm.com/install/) installed and configured
-- [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest) installed
+- Uma [assinatura ativa do Azure](https://azure.microsoft.com/pricing/purchase-options/azure-account)
+- O [Visual Studio Code](https://code.visualstudio.com/) instalado
+- A [versão **3.13.xx** do Python](https://www.python.org/downloads/release/python-31312/) instalada\*
+- O [Git](https://git-scm.com/install/) instalado e configurado
+- A [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest) instalada
 
-> \* Python 3.14 is available, but some dependencies are not yet compiled for that release. The lab has been successfully tested with Python 3.13.12.
+> \* O Python 3.14 está disponível, mas algumas dependências ainda não foram compiladas para essa versão. O laboratório foi testado com sucesso usando o Python 3.13.12.
 
-## Create a Microsoft Foundry project
+## Criar um projeto do Microsoft Foundry
 
-Microsoft Foundry uses projects to organize models, resources, data, and other assets used to develop an AI solution.
+O Microsoft Foundry usa projetos para organizar modelos, recursos, dados e outros ativos usados no desenvolvimento de uma solução de IA.
 
-1. In a web browser, open the [Microsoft Foundry portal](https://ai.azure.com) at `https://ai.azure.com` to start building; signing in using your Azure credentials. Close any tips or quick start panes that are opened the first time you sign in.
+1. Em um navegador da Web, abra o [portal do Microsoft Foundry](https://ai.azure.com) em `https://ai.azure.com` para começar a desenvolver; entre usando suas credenciais do Azure. Feche todas as dicas ou painéis de início rápido que forem abertos na primeira vez que você entrar.
 
-1. If it is not already enabled, in the tool bar at the top of the page, enable the **New Foundry** option. Then, create a new project with a unique name; expanding the **Advanced options** area to specify the following settings for your project:
-    - **Foundry resource**: *Use the default name for your resource (usually {project_name}-resource)*
-    - **Subscription**: *Your Azure subscription*
-    - **Resource group**: *Create or select a resource group*
-    - **Region**: Select any of the **AI Foundry recommended** regions in **[this list](https://learn.microsoft.com/azure/foundry/openai/how-to/responses#region-availability)**{:target="_blank"}
+1. Se ainda não estiver habilitada, habilite a opção **New Foundry** na barra de ferramentas na parte superior da página. Em seguida, crie um novo projeto com um nome exclusivo; expanda a área **Advanced options** para especificar as seguintes configurações para o projeto:
+    - **Foundry resource**: *Use o nome padrão do recurso (geralmente {project_name}-resource)*
+    - **Subscription**: *Sua assinatura do Azure*
+    - **Resource group**: *Crie ou selecione um grupo de recursos*
+    - **Region**: selecione qualquer uma das regiões **AI Foundry recomendadas** nesta [lista](https://learn.microsoft.com/azure/foundry/openai/how-to/responses#region-availability){:target="_blank"}
 
-    > **Tip**: Make a note of the region you selected. You'll need it later!
+    > **Dica**: anote a região selecionada. Você precisará dela mais tarde!
 
-1. Select **Create**. Wait for your project to be created.
+1. Selecione **Create**. Aguarde até que o projeto seja criado.
 
-    When it is ready, the project home page will open.
+    Quando estiver pronto, a página inicial do projeto será aberta.
 
-    ![Screenshot of the Foundry project home page.](../media/foundry-portal-home.png)
+    ![Captura de tela da página inicial do projeto do Foundry.](../media/foundry-portal-home.png)
 
-## Deploy and test a model
+## Implantar e testar um modelo
 
-At the core of any generative AI project, there's at least one generative AI model.
+No centro de qualquer projeto de IA generativa há pelo menos um modelo de IA generativa.
 
-1.  Now you're ready to explore models. On the **Discover** page, select the **Models** tab to view the Microsoft Foundry model catalog.
+1. Agora você está pronto para explorar os modelos. Na página **Discover**, selecione a guia **Models** para exibir o catálogo de modelos do Microsoft Foundry.
 
-1. Search for the `gpt-5.2` model, and then select it in the search results to view its model card.
+1. Pesquise o modelo `gpt-5.2` e selecione-o nos resultados da pesquisa para exibir seu model card.
 
-    Model cards provide information about models to help you understand their capabilities and limitations, and determine if they are suitable for your requirements.
+    Os model cards fornecem informações sobre os modelos para ajudar você a entender seus recursos e limitações e determinar se eles são adequados aos seus requisitos.
 
-    ![Screenshot of the gpt-5.2 model card.](../media/gpt5.2-details.png)
+    ![Captura de tela do model card do gpt-5.2.](../media/gpt5.2-details.png)
 
-1. Select **Deploy** with the default settings to create a deployment of the model.
+1. Selecione **Deploy** com as configurações padrão para criar uma implantação do modelo.
 
-    Model deployments enable you to work with a model in your project.
+    As implantações de modelos permitem trabalhar com um modelo no projeto.
 
-    When the model has been deployed, the model playground will open automatically so you can test your model:
+    Quando o modelo for implantado, o model playground será aberto automaticamente para que você possa testá-lo:
 
-    ![Screenshot of the Foundry project model playground.](../media/ai-foundry-model-playground.png)
+    ![Captura de tela do model playground do projeto Foundry.](../media/ai-foundry-model-playground.png)
 
-1. In the **Instructions** box, enter the following instructions:
+1. Na caixa **Instructions**, insira as seguintes instruções:
 
     ```text
     You are an AI assistant that can provide information and advice about AI software development.
     ```
 
-1. In the chat window, enter a query such as `Describe three key considerations for working with Large Language Models for AI application development.` and view the response:
+1. Na janela de chat, insira uma consulta como `Describe three key considerations for working with Large Language Models for AI application development.` e examine a resposta:
 
-    Hopefully the model provided some key considerations for you to think about!
+    Esperamos que o modelo tenha fornecido algumas considerações importantes para você analisar!
 
-## View Foundry Azure resource and project endpoints
+## Exibir o recurso do Azure e os endpoints do projeto no Foundry
 
-1. In the Foundry portal, in the top menu bar, select **Manage**.
+1. No portal do Foundry, selecione **Manage** na barra de menus superior.
 
-    The management center is where you can view and administer your projects and their parent resources.
+    O centro de gerenciamento é onde você pode exibir e administrar seus projetos e os recursos pai deles.
 
-    ![Screenshot of the Manage tab in Foundry portal.](../media/ai-foundry-manage.png)
+    ![Captura de tela da guia Manage no portal do Foundry.](../media/ai-foundry-manage.png)
 
-    - The *resource* level relates to the **Foundry** resource that was created in Azure to support your project. This resource includes connections to Foundry Services and models; and provides a central place to manage user access to AI development projects.
-    - The *project* level relates to your individual project, where you can add and manage project-specific resources. A resource can support multiple projects (the first one created is the resource's *default* project).
+    - O nível de *resource* refere-se ao recurso do **Foundry** criado no Azure para dar suporte ao projeto. Esse recurso inclui conexões com o Foundry Services e modelos, além de fornecer um local central para gerenciar o acesso dos usuários aos projetos de desenvolvimento de IA.
+    - O nível de *project* refere-se ao projeto individual, no qual você pode adicionar e gerenciar recursos específicos do projeto. Um recurso pode dar suporte a vários projetos (o primeiro criado é o projeto *default* do recurso).
 
-1. Select the link to the **Parent resource** associated with the project.
+1. Selecione o link do **Parent resource** associado ao projeto.
 
-    The resource configuration details should be displayed.
+    Os detalhes de configuração do recurso devem ser exibidos.
 
-    Note that the Foundry resource has an *endpoint*, through which client applications can access resource-level functionality (such as Foundry Tools that are shared across all projects in the resource).
+    Observe que o recurso do Foundry tem um *endpoint* por meio do qual os aplicativos cliente podem acessar funcionalidades no nível do recurso, como as Foundry Tools compartilhadas entre todos os projetos do recurso.
 
-1. In the top menu bar, select **Home** to return to the project home page.
-1. Note the key, project endpoint, and Azure OpenAI endpoint.
+1. Na barra de menus superior, selecione **Home** para retornar à página inicial do projeto.
+1. Anote a chave, o endpoint do projeto e o endpoint do Azure OpenAI.
 
-    This information is used to connect to your project-level resouces from client applications.
+    Essas informações são usadas para conectar aplicativos cliente aos recursos no nível do projeto.
 
-    - The *key* is used for key-based authentication to models and tools (though in most production scenarios you should consider using Microsoft Entra ID authentication based on authenticated user and application identities).
-    - The *project endpoint* is used to access models provided directly in Foundry (including OpenAI models) using the OpenAI **Responses** API, and to access Foundry-specific APIs (such as the Foundry Agent service).
-    - The *OpenAI endpoint* is used to access models using OpenAI APIs, including the **Chat Completions** API and the **Responses** API.
+    - A *key* é usada para autenticação baseada em chave em modelos e ferramentas (embora, na maioria dos cenários de produção, você deva considerar o uso da autenticação do Microsoft Entra ID com base em identidades de usuários e aplicativos autenticados).
+    - O *project endpoint* é usado para acessar modelos fornecidos diretamente no Foundry (incluindo modelos OpenAI) usando a API **Responses** da OpenAI e para acessar APIs específicas do Foundry, como o serviço Foundry Agent.
+    - O *OpenAI endpoint* é usado para acessar modelos usando APIs da OpenAI, incluindo a API **Chat Completions** e a API **Responses**.
 
-## Install the Foundry Toolkit extension for Visual Studio Code
+## Instalar a extensão Foundry Toolkit para Visual Studio Code
 
-As a developer, you may spend some time working in the Foundry portal; but you're also likely to spend a lot of time in Visual Studio Code. The Foundry Toolkit extension provides a convenient way to work with Foundry project resources without leaving the development environment.
+Como desenvolvedor, você pode passar algum tempo trabalhando no portal do Foundry, mas provavelmente também passará bastante tempo no Visual Studio Code. A extensão Foundry Toolkit oferece uma maneira conveniente de trabalhar com os recursos do projeto Foundry sem sair do ambiente de desenvolvimento.
 
-1. Start Visual Studio Code
-1. In the navigation bar on the left, view the **Extensions** page.
-1. Search the extensions marketplace for `Foundry Toolkit`, and install the **Foundry Toolkit for VS Code** extension.
+1. Inicie o Visual Studio Code.
+1. Na barra de navegação à esquerda, abra a página **Extensions**.
+1. Pesquise `Foundry Toolkit` no marketplace de extensões e instale a extensão **Foundry Toolkit for VS Code**.
 
-    The extension may take a minute or so to install.
+    A instalação da extensão pode levar cerca de um minuto.
 
-1. After installing the extension, select the **Foundry Toolkit** page in the left navigation bar; and wait for it to load.
+1. Depois de instalar a extensão, selecione a página **Foundry Toolkit** na barra de navegação à esquerda e aguarde o carregamento.
 
-    ![Screenshot of the Foundry Toolkit Visual Studio Code extension.](../media/foundry-vs-extension.png)
+    ![Captura de tela da extensão Foundry Toolkit para Visual Studio Code.](../media/foundry-vs-extension.png)
 
-1. In the Foundry Toolkit pane, expand **Microsoft Foundry Resources** and set the default project by connecting to Azure (signing in with your credentials) and selecting the Foundry project you created previously.
+1. No painel Foundry Toolkit, expanda **Microsoft Foundry Resources** e defina o projeto padrão conectando-se ao Azure (entrando com suas credenciais) e selecionando o projeto Foundry criado anteriormente.
 
-1. After setting the default project, expand the project, expand **Models**, and select the **gpt-5.2** model you deployed previously.
+1. Depois de definir o projeto padrão, expanda o projeto, expanda **Models** e selecione o modelo **gpt-5.2** implantado anteriormente.
 
-    You can view the model deployment details here.
+    Você pode exibir aqui os detalhes da implantação do modelo.
 
-    ![Screenshot of a model in the  Foundry Toolkit Visual Studio Code extension.](../media/vscode-extension-model.png)
+    ![Captura de tela de um modelo na extensão Foundry Toolkit para Visual Studio Code.](../media/vscode-extension-model.png)
 
-1. In the Foundry Toolkit pane, in the **Developer Tools** section, expand **Build** and select **Model playground**. Then select the **gpt-5.2** model (if it is not already selected).
+1. No painel Foundry Toolkit, na seção **Developer Tools**, expanda **Build** e selecione **Model playground**. Em seguida, selecione o modelo **gpt-5.2** (se ele ainda não estiver selecionado).
 
-    An interactive playground in which you can test the model is opened in Visual Studio Code.
+    Um playground interativo no qual você pode testar o modelo será aberto no Visual Studio Code.
 
-    ![Screenshot of the model playground in Visual Studio Code.](../media/vscode-model-playground.png)
+    ![Captura de tela do model playground no Visual Studio Code.](../media/vscode-model-playground.png)
 
-## Summary
+## Resumo
 
-In this exercise, you've created a Microsoft Foundry and explored it in the Foundry portal. You've also explored the  Foundry Toolkit extension in Visual Studio Code, which provides a convenient way for developers to work with Foundry projects and their assets.
+Neste exercício, você criou um Microsoft Foundry e o explorou no portal do Foundry. Você também explorou a extensão Foundry Toolkit no Visual Studio Code, que oferece uma maneira conveniente para os desenvolvedores trabalharem com projetos do Foundry e seus ativos.
 
-## Clean up
+## Limpeza
 
-If you've finished exploring Foundry portal, you should delete the resources you have created in this exercise to avoid incurring unnecessary Azure costs.
+Se você terminou de explorar o portal do Foundry, deverá excluir os recursos criados neste exercício para evitar custos desnecessários do Azure.
 
-1. In the [Azure portal](https://portal.azure.com) at `https://portal.azure.com`, view the contents of the resource group where you deployed the resources used in this exercise.
-1. On the toolbar, select **Delete resource group**.
-1. Enter the resource group name and confirm that you want to delete it.
+1. No [portal do Azure](https://portal.azure.com), em `https://portal.azure.com`, exiba o conteúdo do grupo de recursos no qual você implantou os recursos usados neste exercício.
+1. Na barra de ferramentas, selecione **Delete resource group**.
+1. Insira o nome do grupo de recursos e confirme que deseja excluí-lo.
