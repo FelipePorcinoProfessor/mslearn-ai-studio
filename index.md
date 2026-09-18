@@ -16,6 +16,10 @@ layout: default
   .exercise-description { flex: 1; margin: 0 0 1rem; color: #4b5563; font-size: .93rem; line-height: 1.55; }
   .exercise-meta { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: auto; color: #5b6472; font-size: .78rem; }
   .exercise-badge { padding: .2rem .55rem; border-radius: 999px; background: #eef3fc; color: #173f91; font-weight: 600; }
+  :root[data-theme="dark"] .exercise-note { background: var(--brand-soft); }
+  :root[data-theme="dark"] .exercise-card { background: var(--surface); border-color: var(--line); box-shadow: 0 8px 20px rgba(0,0,0,.18); }
+  :root[data-theme="dark"] .exercise-description { color: var(--muted); }
+  :root[data-theme="dark"] .exercise-badge { background: var(--brand-soft); color: var(--brand); }
   @media (max-width: 600px) { .exercise-grid { grid-template-columns: 1fr; } }
 </style>
 
