@@ -9,6 +9,7 @@ lab:
   primarytopics:
     - Microsoft Foundry
     - Visual Studio Code
+layout: default
 ---
 
 # Preparar-se para um projeto de desenvolvimento de IA

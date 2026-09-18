@@ -6,6 +6,7 @@ lab:
   duration: 25
   islab: true
   status: 'released'
+layout: default
 ---
 
 # Apply guardrails to prevent the output of harmful content

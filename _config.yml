@@ -6,7 +6,7 @@ header_pages:
   - index.html
 author: Microsoft Learning
 twitter_username: mslearning
-github_username:  MicrosoftLearning
+github_username: FelipePorcinoProfessor
 plugins:
   - jekyll-sitemap
   - jekyll-mentions

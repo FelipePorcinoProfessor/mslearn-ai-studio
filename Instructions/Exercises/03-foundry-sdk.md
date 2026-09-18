@@ -6,6 +6,7 @@ lab:
     duration: 45
     islab: true
     status: 'released'
+layout: default
 ---
 
 # Criar um aplicativo de chat de IA generativa

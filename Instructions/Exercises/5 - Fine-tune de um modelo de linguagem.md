@@ -6,6 +6,7 @@ lab:
   duration: 90
   islab: true
   status: 'released'
+layout: default
 ---
 
 # Realizar fine-tune de um modelo de linguagem
