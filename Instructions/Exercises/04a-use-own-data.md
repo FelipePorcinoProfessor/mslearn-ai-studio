@@ -62,7 +62,7 @@ Antes de desenvolver um aplicativo de chat, vamos explorar como o modelo respond
 1. No campo **Instructions**, insira o seguinte prompt:
 
     ```
-   You are a travel assistant that provides information on travel services available from Margie's Travel.
+   Você é um assistente de viagens que fornece informações sobre os serviços de viagem oferecidos pela Margie's Travel.
     ```
 
 1. No painel de chat, insira a consulta `What are some recommended tourist activities in New York next month?` e revise a resposta.
@@ -188,9 +188,9 @@ Os arquivos iniciais do aplicativo de que você precisará para desenvolver seu 
    response = openai_client.responses.create(
         model=model_deployment,
         instructions="""
-        You are a travel assistant that provides information on travel services available from Margie's Travel.
-        Answer questions about services offered by Margie's Travel using the provided travel brochures.
-        Search the web for general information about destinations or current travel advice.
+        Você é um assistente de viagens que fornece informações sobre os serviços oferecidos pela Margie's Travel.
+        Responda a perguntas sobre os serviços da Margie's Travel utilizando os folhetos de viagem fornecidos.
+        Pesquise na internet informações gerais sobre destinos ou orientações de viagem atuais.
         """,
         input=input_text,
         previous_response_id=last_response_id,
