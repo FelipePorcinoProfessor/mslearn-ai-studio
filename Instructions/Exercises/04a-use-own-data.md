@@ -227,11 +227,11 @@ Os arquivos iniciais do aplicativo de que você precisará para desenvolver seu 
 
     O programa deve ser executado no terminal (se não, resolva quaisquer erros e tente novamente).
 
-1. Quando solicitado, insira `What's happening in San Francisco next month?` e revise a resposta do seu modelo de IA generativa.
+1. Quando solicitado, insira `O que vai acontecer em São Francisco no mês que vem` e revise a resposta do seu modelo de IA generativa.
 
     A resposta deve incluir informações recuperadas usando a ferramenta *web_search*.
 
-1. Experimente esta pergunta de acompanhamento: `What hotels does Margie's Travel offer there?`
+1. Experimente esta pergunta de acompanhamento: `Que hotéis a Margie's Travel oferece lá?`
 
     A resposta deve incluir informações recuperadas usando a ferramenta *file_search*.
 
