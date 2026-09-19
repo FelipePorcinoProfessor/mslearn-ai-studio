@@ -65,13 +65,13 @@ Antes de desenvolver um aplicativo de chat, vamos explorar como o modelo respond
    Você é um assistente de viagens que fornece informações sobre os serviços de viagem oferecidos pela Margie's Travel.
     ```
 
-1. No painel de chat, insira a consulta `What are some recommended tourist activities in New York next month?` e revise a resposta.
+1. No painel de chat, insira a consulta `Quais são algumas atividades turísticas recomendadas em Nova York para o próximo mês?` e revise a resposta.
 
     A resposta deve ser bastante genérica — o modelo fornece conhecimento geral com base em seus dados de treinamento, mas não tem acesso a informações atuais sobre o que acontecerá em Nova York no próximo mês.
 
 1. No painel à esquerda, abaixo das instruções, na seção **Tools**, selecione **Add** e adicione a ferramenta **web_search**.
 
-1. No painel de chat, insira a mesma consulta `What are some recommended tourist activities in New York next month?` e revise a resposta.
+1. No painel de chat, insira a mesma consulta `Quais são algumas atividades turísticas recomendadas em Nova York para o próximo mês?` e revise a resposta.
 
     Desta vez, o modelo usa a ferramenta *web_search* para encontrar informações atuais sobre atividades em Nova York.
 
