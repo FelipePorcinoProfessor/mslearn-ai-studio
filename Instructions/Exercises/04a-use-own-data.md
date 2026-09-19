@@ -227,7 +227,7 @@ Os arquivos iniciais do aplicativo de que você precisará para desenvolver seu 
 
     O programa deve ser executado no terminal (se não, resolva quaisquer erros e tente novamente).
 
-1. Quando solicitado, insira `O que vai acontecer em São Francisco no mês que vem` e revise a resposta do seu modelo de IA generativa.
+1. Quando solicitado, insira `O que vai acontecer em São Francisco no mês que vem?` e revise a resposta do seu modelo de IA generativa.
 
     A resposta deve incluir informações recuperadas usando a ferramenta *web_search*.
 
